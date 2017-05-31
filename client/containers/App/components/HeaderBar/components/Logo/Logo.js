@@ -16,6 +16,7 @@ class Logo extends PureComponent {
     return (
       <div>
         <Link to="/">
+          logo
           <img
             alt={l('Logo')}
             className={styles.logo}

@@ -34,12 +34,11 @@ var configs = {
       loader: 'style-loader!css-loader',
       exclude: [/node_modules/, /public/]
     },{
-      test: /\.(scss|sass)$/,
-      loader: ExtractTextPlugin.extract({
+      test: /\.(scss|sass)$/, // files ending with .scss or .sass
+      use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
         fallback: 'style-loader',
-        use: ['css-loader','postcss-loader','sass-loader']
-      }),
-      exclude: [/node_modules/, /public/]
+        use: ['css-loader', 'sass-loader'],
+      })),
     },{
       test: [/\.jsx?$/, /\.es6$/],
       include: path.resolve('./../'),

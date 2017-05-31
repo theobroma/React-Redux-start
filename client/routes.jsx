@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, IndexRoute, IndexRedirect } from 'react-router';
-import Layout from './Layout';
 import App from './containers/App';
 import MediumPopover from './MediumPopover';
 import NotFound from './NotFound';

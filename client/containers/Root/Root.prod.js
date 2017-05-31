@@ -7,7 +7,6 @@ import routes from '../../routes';
 
 class Root extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
     history: PropTypes.object.isRequired,
     store: PropTypes.object.isRequired
   }

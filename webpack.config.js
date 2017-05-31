@@ -29,15 +29,18 @@ var configs = {
   },
   watch: isDevelopment,
   module: {
-    loaders: [{
+    rules: [{
       test: /\.css$/,
       loader: 'style-loader!css-loader',
       exclude: [/node_modules/, /public/]
-    }, {
+    },{
       test: /\.(scss|sass)$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader'),
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: ['css-loader','postcss-loader','sass-loader']
+      }),
       exclude: [/node_modules/, /public/]
-    }, {
+    },{
       test: [/\.jsx?$/, /\.es6$/],
       include: [
         path.join(__dirname, 'client'),
@@ -47,29 +50,32 @@ var configs = {
       /*loaders: ['react-hot', 'babel']*/
       /* loaders: ["babel-loader", "eslint-loader"]*/
       loader: 'babel-loader'
-    }, {
-      test: /\.((woff2?|svg)(\?v=[0-9]\.[0-9]\.[0-9]))|(woff2?|svg|jpe?g|png|gif|ico)$/, loader: 'url?limit=10000'
-    }, {
-      test: /\.((ttf|otf|eot)(\?v=[0-9]\.[0-9]\.[0-9]))|(ttf|otf|eot)$/, loader: 'file'
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }, {
-        test: /\.html$/,
-        loader: 'raw',
-        exclude: /node_modules/
+    },{
+      test: /\.svg/,
+      loader: 'url-loader',
+      options: {
+        limit: 26000,
+        mimetype: 'image/svg+xml'
+      }
+    },{
+      test: /.*\.(gif|png|jpe?g)$/i,
+      loader: 'url-loader?limit=10000&name=images/[name]-[hash:base64:10].[ext]'
+    },{
+      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: 'url-loader?limit=10000&minetype=application/font-woff&name=fonts/[name]-[hash:base64:10].[ext]'
+    },{
+      test: /\.(otf|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: 'file-loader?name=icons/[name]-[hash:base64:10].[ext]'
+    },{
+      test: /\.html$/,
+      loader: 'raw-loader',
+      exclude: /node_modules/
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css', '.scss']
+    extensions: ['.js', '.jsx', '.css', '.scss']
   },
   devtool: isDevelopment ? 'cheap-module-source-map' : null,
-  postcss: [
-    autoprefixer({
-      browsers: ['last 2 version']
-    })
-  ],
-
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -81,9 +87,7 @@ var configs = {
       template: './static/index.html',
       inject: 'body'
     }),
-    new ExtractTextPlugin('bundle.css', {
-      disable: false
-    }),
+    new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true }),
     new CopyWebpackPlugin([
       { from: 'static/assets', to: outputPath  }
     ]),
@@ -92,7 +96,19 @@ var configs = {
       __DEVTOOLS__: true,
       DEVELOPMENT: true,
       PRODUCTION: false
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({
+    test: /\.css/,
+    options: {
+      postcss: [
+        autoprefixer({
+          browsers: ['last 3 version', 'ie >= 10']
+        })
+      ]
+    }
+  }),
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.NoEmitOnErrorsPlugin()
   ]
 };
 

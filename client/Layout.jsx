@@ -6,7 +6,7 @@ export default class Layout extends Component {
       <div>
         <div className="site-content">
           <section>
-            {React.cloneElement(this.props.children,this.props)}
+            {this.props.children}
           </section>
         </div>
       </div>

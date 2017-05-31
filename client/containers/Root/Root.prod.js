@@ -4,8 +4,6 @@ import { Router } from 'react-router';
 
 import routes from '../../routes';
 
-console.log(routes);
-
 class Root extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,

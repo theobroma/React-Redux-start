@@ -1,5 +1,6 @@
-import { PureComponent, PropTypes } from 'react';
+import { PureComponent} from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 import logo from './img/logo.png';
 

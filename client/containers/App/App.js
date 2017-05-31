@@ -1,8 +1,6 @@
-import React, { PropTypes, PureComponent } from 'react';
-import { connect } from 'react-redux';
-
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import HeaderBar from './components/HeaderBar';
-
 import styles from './App.css';
 
 class App extends PureComponent {
@@ -10,7 +8,6 @@ class App extends PureComponent {
     children: PropTypes.node.isRequired,
     location: PropTypes.object.isRequired
   }
-
 
   render() {
     return (
@@ -24,10 +21,4 @@ class App extends PureComponent {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    questions: state.questions
-  };
-}
-
-export default connect(mapStateToProps, null)(App);
+export default App;

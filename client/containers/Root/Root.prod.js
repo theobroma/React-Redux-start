@@ -1,6 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import PropTypes from 'prop-types';
 
 import routes from '../../routes';
 

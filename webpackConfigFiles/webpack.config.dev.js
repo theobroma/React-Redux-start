@@ -108,16 +108,4 @@ var configs = {
   ]
 };
 
-if (!isDevelopment) {
-  configs.plugins.push(
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: false,
-      compress: { warnings: false },
-      sourceMap: false
-    })
-  )
-}
-
 module.exports = configs;

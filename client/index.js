@@ -1,29 +1,18 @@
 import "babel-polyfill";
+import Immutable from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import promise from 'redux-promise';
-import createLogger from 'redux-logger';
 
-import rootReducer from './rootReducer';
 import Root from './containers/Root';
 import './sass/main.scss';
 
-const logger = createLogger();
+const initialState = new Immutable.Map();
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(thunk, promise, logger, routerMiddleware(browserHistory)),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
-  )
-);
-
+import configureStore from './store';
+const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(

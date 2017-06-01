@@ -36,6 +36,7 @@ const configs = {
   devtool: 'cheap-module-source-map',
   plugins: [...commonPlugins,
     new webpack.HotModuleReplacementPlugin(),
+    new WebpackNotifierPlugin(),
     new CopyWebpackPlugin([
       { from: 'static/assets', to: outputPath  }
     ]),

@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware } from 'redux';
+//difference from dev only logger and devtools-extension
+import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import {
@@ -13,7 +14,7 @@ export default function configureStore(preloadedState) {
 
   const middlewares = [
     ...middlewaresToApply,
-    createSagaMiddleware()
+    sagaMiddleware
   ];
 
   const enhancers = [
@@ -23,7 +24,7 @@ export default function configureStore(preloadedState) {
   const store = createStore(
     ...basicMiddleware,
     preloadedState,
-    enhancers
+    compose(...enhancers)
   );
 
   sagaMiddleware.run(rootSaga);

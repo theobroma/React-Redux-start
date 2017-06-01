@@ -14,13 +14,8 @@ console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 
 //different output path for production and development
 const outputPath = path.resolve(__dirname, '../dist/public/build');
-
 const configs = {
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client',
-    './client/index'
-  ],
+  entry: './client/index',
   output: {
     path: outputPath,
     filename: 'bundle.js',

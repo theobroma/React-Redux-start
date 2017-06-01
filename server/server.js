@@ -5,11 +5,7 @@ import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../etc/config.json');
-const webpackConfig = require('../webpack.config');
 // server routes
 import medium from './routes/medium';
 
@@ -23,9 +19,22 @@ mongoose.connect(mongoUri, (error) => {
   else console.log('mongo connected');
 });
 //HMR
-const compiler = webpack(webpackConfig);
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
-app.use(webpackHotMiddleware(compiler, { noInfo: true }));
+// we only want hot reloading in development
+if (process.env.NODE_ENV !== 'production') {
+    console.log('DEVOLOPMENT ENVIRONMENT: Turning on WebPack Middleware...');
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpackConfig = require('../webpack.config');
+
+    const compiler = webpack(webpackConfig);
+    app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
+    app.use(webpackHotMiddleware(compiler, { noInfo: true }));
+} else {
+    console.log('PRODUCTION ENVIRONMENT');
+    //Production needs physical files! (built via separate process)
+}
+
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());

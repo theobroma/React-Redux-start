@@ -34,11 +34,7 @@ var _medium2 = _interopRequireDefault(_medium);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var webpack = require('webpack');
-var webpackDevMiddleware = require('webpack-dev-middleware');
-var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require('../etc/config.json');
-var webpackConfig = require('../webpack.config');
 // server routes
 
 
@@ -48,12 +44,24 @@ app.set('port', process.env.PORT || 8080);
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.name;
 _mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect(mongoUri, function (error) {
-  if (error) console.error(error);else console.log('mongo connected');
+    if (error) console.error(error);else console.log('mongo connected');
 });
 //HMR
-var compiler = webpack(webpackConfig);
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
-app.use(webpackHotMiddleware(compiler, { noInfo: true }));
+// we only want hot reloading in development
+if (process.env.NODE_ENV !== 'production') {
+    console.log('DEVOLOPMENT ENVIRONMENT: Turning on WebPack Middleware...');
+    var webpack = require('webpack');
+    var webpackDevMiddleware = require('webpack-dev-middleware');
+    var webpackHotMiddleware = require('webpack-hot-middleware');
+    var webpackConfig = require('../webpack.config');
+
+    var compiler = webpack(webpackConfig);
+    app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
+    app.use(webpackHotMiddleware(compiler, { noInfo: true }));
+} else {
+    console.log('PRODUCTION ENVIRONMENT');
+    //Production needs physical files! (built via separate process)
+}
 
 app.use((0, _morgan2.default)('dev'));
 app.use(_bodyParser2.default.json());
@@ -67,26 +75,24 @@ app.use('/api/medium', _medium2.default);
 
 // Redirect all non api requests to the index
 app.get('*', function (req, res) {
-  res.sendFile(_path2.default.join(__dirname, 'public', 'build', 'index.html'));
+    res.sendFile(_path2.default.join(__dirname, 'public', 'build', 'index.html'));
 });
 
 app.listen(app.get('port'), function () {
-  console.log('Node app is running on port', app.get('port'));
+    console.log('Node app is running on port', app.get('port'));
 });
 
 module.exports = app;
 ;
 
 (function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
+    if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+        return;
+    }
 
-  __REACT_HOT_LOADER__.register(app, 'app', 'server/server.js');
+    __REACT_HOT_LOADER__.register(app, 'app', 'server/server.js');
 
-  __REACT_HOT_LOADER__.register(mongoUri, 'mongoUri', 'server/server.js');
-
-  __REACT_HOT_LOADER__.register(compiler, 'compiler', 'server/server.js');
+    __REACT_HOT_LOADER__.register(mongoUri, 'mongoUri', 'server/server.js');
 })();
 
 ;

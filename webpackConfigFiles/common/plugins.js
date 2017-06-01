@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const WebpackNotifierPlugin = require('webpack-notifier');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = [
@@ -10,7 +9,7 @@ module.exports = [
     format: `  build [:bar] ${':percent'.bold.green} (:elapsed seconds)`,
     clear: true
   }),
-  new WebpackNotifierPlugin(),
+  new webpack.EnvironmentPlugin(['NODE_ENV']),
   new HtmlWebpackPlugin({
     template: './static/index.html',
     inject: 'body'

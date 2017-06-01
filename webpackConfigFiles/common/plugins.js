@@ -16,12 +16,6 @@ module.exports = [
     inject: 'body'
   }),
   new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true }),
-  new webpack.HotModuleReplacementPlugin(),
-  new webpack.DefinePlugin({
-    __DEVTOOLS__: true,
-    DEVELOPMENT: true,
-    PRODUCTION: false
-  }),
   new webpack.LoaderOptionsPlugin({
     test: /\.css/,
     options: {

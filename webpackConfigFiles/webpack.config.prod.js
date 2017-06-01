@@ -13,7 +13,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 
 //different output path for production and development
-const outputPath = path.resolve(__dirname, 'server/public/build');
+const outputPath = path.resolve(__dirname, '../dist/public/build');
 
 const configs = {
   entry: [
@@ -26,7 +26,7 @@ const configs = {
     filename: 'bundle.js',
     publicPath: '/',
   },
-  watch: true,
+  watch: false,
   module: {
     rules: [...commonRules]
   },
@@ -35,14 +35,13 @@ const configs = {
   },
   devtool: 'cheap-module-source-map',
   plugins: [...commonPlugins,
-    new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       { from: 'static/assets', to: outputPath  }
     ]),
     new webpack.DefinePlugin({
-      __DEVTOOLS__: true,
-      DEVELOPMENT: true,
-      PRODUCTION: false
+      __DEVTOOLS__: false,
+      DEVELOPMENT: false,
+      PRODUCTION: true
     })
   ]
 };

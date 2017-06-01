@@ -15,4 +15,17 @@ var schema = new Schema({
 });
 
 module.exports = _mongoose2.default.model('Comment', schema);
+;
+
+(function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(Schema, 'Schema', 'server/models/comment.js');
+
+  __REACT_HOT_LOADER__.register(schema, 'schema', 'server/models/comment.js');
+})();
+
+;
 //# sourceMappingURL=comment.js.map

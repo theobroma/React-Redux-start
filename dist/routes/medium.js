@@ -48,5 +48,19 @@ router.delete('/', function (req, res) {
   });
 });
 
-exports.default = router;
+var _default = router;
+exports.default = _default;
+;
+
+(function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(router, 'router', 'server/routes/medium.js');
+
+  __REACT_HOT_LOADER__.register(_default, 'default', 'server/routes/medium.js');
+})();
+
+;
 //# sourceMappingURL=medium.js.map

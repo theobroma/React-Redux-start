@@ -28,28 +28,32 @@ var _morgan = require('morgan');
 
 var _morgan2 = _interopRequireDefault(_morgan);
 
-var _config = require('../etc/config.json');
-
-var _config2 = _interopRequireDefault(_config);
-
 var _medium = require('./routes/medium');
 
 var _medium2 = _interopRequireDefault(_medium);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var webpack = require('webpack');
+var webpackDevMiddleware = require('webpack-dev-middleware');
+var webpackHotMiddleware = require('webpack-hot-middleware');
+var config = require('../etc/config.json');
+var webpackConfig = require('../webpack.config');
 // server routes
+
+
 var app = (0, _express2.default)();
-
 app.set('port', process.env.PORT || 8080);
+//MongoDB
+var mongoUri = process.env.MONGOLAB_URI || 'mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.name;
 _mongoose2.default.Promise = global.Promise;
-var mongoUri = process.env.MONGOLAB_URI || 'mongodb://' + _config2.default.db.host + ':' + _config2.default.db.port + '/' + _config2.default.db.name;
-
-/* mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);*/
-
 _mongoose2.default.connect(mongoUri, function (error) {
   if (error) console.error(error);else console.log('mongo connected');
 });
+//HMR
+var compiler = webpack(webpackConfig);
+app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
+app.use(webpackHotMiddleware(compiler, { noInfo: true }));
 
 app.use((0, _morgan2.default)('dev'));
 app.use(_bodyParser2.default.json());
@@ -71,4 +75,19 @@ app.listen(app.get('port'), function () {
 });
 
 module.exports = app;
+;
+
+(function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(app, 'app', 'server/server.js');
+
+  __REACT_HOT_LOADER__.register(mongoUri, 'mongoUri', 'server/server.js');
+
+  __REACT_HOT_LOADER__.register(compiler, 'compiler', 'server/server.js');
+})();
+
+;
 //# sourceMappingURL=server.js.map

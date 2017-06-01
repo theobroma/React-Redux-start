@@ -34,4 +34,21 @@ for (var i = 0; i < comments.length; i++) {
     }
   });
 }
+;
+
+(function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(mongoUri, 'mongoUri', 'server/seed/medium-comment-seeder.js');
+
+  __REACT_HOT_LOADER__.register(comments, 'comments', 'server/seed/medium-comment-seeder.js');
+
+  __REACT_HOT_LOADER__.register(exit, 'exit', 'server/seed/medium-comment-seeder.js');
+
+  __REACT_HOT_LOADER__.register(done, 'done', 'server/seed/medium-comment-seeder.js');
+})();
+
+;
 //# sourceMappingURL=medium-comment-seeder.js.map

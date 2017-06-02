@@ -15,7 +15,15 @@ console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
 //different output path for production and development
 const outputPath = path.resolve(__dirname, '../dist/public/build');
 const configs = {
-  entry: './client/index',
+    entry: {
+    main: './client/index',
+    vendor: [
+      'react', 'react-dom',
+      'redux', 'redux-form',
+      'immutable', 'moment',
+      'redux-saga'
+    ]
+  },
   output: {
     path: outputPath,
     filename: 'bundle.js',
@@ -37,6 +45,10 @@ const configs = {
       __DEVTOOLS__: false,
       DEVELOPMENT: false,
       PRODUCTION: true
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.[hash].js'
     })
   ]
 };

@@ -25,6 +25,5 @@ module.exports = [
       ]
     }
   }),
-  new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.NoEmitOnErrorsPlugin()
 ];
